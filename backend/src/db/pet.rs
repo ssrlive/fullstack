@@ -15,9 +15,9 @@ pub async fn fetch(db_pool: &DBPool, owner_id: i32) -> Result<Vec<Pet>> {
     let rows = con
         .query(query.as_str(), &[&owner_id])
         .await
-        .map_err(DBQueryError)?;
+        .map_err(DBQuery)?;
 
-    Ok(rows.iter().map(|r| row_to_pet(&r)).collect())
+    Ok(rows.iter().map(row_to_pet).collect())
 }
 
 pub async fn create(db_pool: &DBPool, owner_id: i32, body: PetRequest) -> Result<Pet> {
@@ -32,7 +32,7 @@ pub async fn create(db_pool: &DBPool, owner_id: i32, body: PetRequest) -> Result
             &[&body.name, &owner_id, &body.animal_type, &body.color],
         )
         .await
-        .map_err(DBQueryError)?;
+        .map_err(DBQuery)?;
     Ok(row_to_pet(&row))
 }
 
@@ -41,7 +41,7 @@ pub async fn delete(db_pool: &DBPool, owner_id: i32, id: i32) -> Result<u64> {
     let query = format!("DELETE FROM {} WHERE id = $1 AND owner_id = $2", TABLE);
     con.execute(query.as_str(), &[&id, &owner_id])
         .await
-        .map_err(DBQueryError)
+        .map_err(DBQuery)
 }
 
 fn row_to_pet(row: &Row) -> Pet {

@@ -9,9 +9,9 @@ const SELECT_FIELDS: &str = "id, name";
 pub async fn fetch(db_pool: &DBPool) -> Result<Vec<Owner>> {
     let con = get_db_con(db_pool).await?;
     let query = format!("SELECT {} FROM {}", SELECT_FIELDS, TABLE);
-    let rows = con.query(query.as_str(), &[]).await.map_err(DBQueryError)?;
+    let rows = con.query(query.as_str(), &[]).await.map_err(DBQuery)?;
 
-    Ok(rows.iter().map(|r| row_to_owner(&r)).collect())
+    Ok(rows.iter().map(row_to_owner).collect())
 }
 
 pub async fn fetch_one(db_pool: &DBPool, id: i32) -> Result<Owner> {
@@ -21,7 +21,7 @@ pub async fn fetch_one(db_pool: &DBPool, id: i32) -> Result<Owner> {
     let row = con
         .query_one(query.as_str(), &[&id])
         .await
-        .map_err(DBQueryError)?;
+        .map_err(DBQuery)?;
     Ok(row_to_owner(&row))
 }
 
@@ -31,7 +31,7 @@ pub async fn create(db_pool: &DBPool, body: OwnerRequest) -> Result<Owner> {
     let row = con
         .query_one(query.as_str(), &[&body.name])
         .await
-        .map_err(DBQueryError)?;
+        .map_err(DBQuery)?;
     Ok(row_to_owner(&row))
 }
 

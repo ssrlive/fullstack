@@ -43,13 +43,13 @@ impl Component for FullStackApp {
 
     fn view(&self) -> Html {
         html! {
-            <div class=classes!("app")>
-                <div class=classes!("nav")>
-                    <Anchor route=AppRoute::Home>{"Home"}</Anchor>
+            <div class={ classes!("app") }>
+                <div class={ classes!("nav") }>
+                    <Anchor route={ AppRoute::Home }>{"Home"}</Anchor>
                 </div>
-                <div class=classes!("content")>
+                <div class={ classes!("content") }>
                     <Router<AppRoute, ()>
-                        render = Router::render(move |switch: AppRoute| {
+                        render = { Router::render(move |switch: AppRoute| {
                             match switch {
                                 AppRoute::CreateOwner => {
                                     html! {
@@ -60,13 +60,13 @@ impl Component for FullStackApp {
                                 AppRoute::CreatePet(owner_id) => {
                                     html! {
                                         <div>
-                                            <pet::create::CreateForm owner_id=owner_id/>
+                                            <pet::create::CreateForm owner_id={ owner_id }/>
                                         </div>}
                                 }
                                 AppRoute::Detail(owner_id) => {
                                     html! {
                                         <div>
-                                            <owner::detail::Detail owner_id=owner_id/>
+                                            <owner::detail::Detail owner_id={ owner_id }/>
                                         </div>}
                                 }
                                 AppRoute::Home => {
@@ -74,14 +74,14 @@ impl Component for FullStackApp {
                                         <div>
                                             <owner::list::List />
                                             <br />
-                                            <Anchor route=AppRoute::CreateOwner>
+                                            <Anchor route={ AppRoute::CreateOwner }>
                                             { "Create New Owner" }
                                                 </Anchor>
                                         </div>
                                     }
                                 }
                             }
-                        })
+                        }) }
                     />
                 </div>
             </div>

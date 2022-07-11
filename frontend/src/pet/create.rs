@@ -38,7 +38,7 @@ impl CreateForm {
             .callback(move |e: InputData| Msg::EditColor(e.value));
 
         html! {
-            <div class=classes!("pet-form")>
+            <div class={ classes!("pet-form") }>
                 <div>
                     <input type="text" value={self.state_pet_name.clone()} oninput={edit_name} />
                 </div>
@@ -52,7 +52,7 @@ impl CreateForm {
                     <input type="text" value={self.state_color.clone()} oninput={edit_color} />
                 </div>
                 <div>
-                    <button onclick=self.link.callback(move |_| Msg::MakeReq(owner_id))>{"Submit"}</button>
+                    <button onclick={ self.link.callback(move |_| Msg::MakeReq(owner_id)) }>{"Submit"}</button>
                 </div>
             </div>
         }
@@ -112,11 +112,10 @@ impl Component for CreateForm {
 
                 let task = FetchService::fetch(req, cb).expect("can create task");
                 self.fetch_task = Some(task);
-                ()
             }
             Msg::Resp(resp) => {
                 ConsoleService::info(&format!("pet created: {:?}", resp));
-                if let Ok(_) = resp {
+                if resp.is_ok() {
                     RouteAgent::dispatcher().send(RouteRequest::ChangeRoute(Route {
                         route: format!("/app/{}", self.props.owner_id),
                         state: (),

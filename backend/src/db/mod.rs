@@ -21,12 +21,12 @@ pub async fn init_db(db_pool: &DBPool) -> Result<()> {
     let con = get_db_con(db_pool).await?;
     con.batch_execute(init_file.as_str())
         .await
-        .map_err(DBInitError)?;
+        .map_err(DBInit)?;
     Ok(())
 }
 
 pub async fn get_db_con(db_pool: &DBPool) -> Result<DBCon> {
-    db_pool.get().await.map_err(DBPoolError)
+    db_pool.get().await.map_err(DBPool)
 }
 
 pub fn create_pool() -> std::result::Result<DBPool, mobc::Error<Error>> {

@@ -7,13 +7,13 @@ use warp::{http::StatusCode, Rejection, Reply};
 #[derive(Error, Debug)]
 pub enum Error {
     #[error("error getting connection from DB pool: {0}")]
-    DBPoolError(mobc::Error<tokio_postgres::Error>),
+    DBPool(mobc::Error<tokio_postgres::Error>),
     #[error("error executing DB query: {0}")]
-    DBQueryError(#[from] tokio_postgres::Error),
+    DBQuery(#[from] tokio_postgres::Error),
     #[error("error creating table: {0}")]
-    DBInitError(tokio_postgres::Error),
+    DBInit(tokio_postgres::Error),
     #[error("error reading file: {0}")]
-    ReadFileError(#[from] std::io::Error),
+    ReadFile(#[from] std::io::Error),
 }
 
 #[derive(Serialize)]
@@ -36,7 +36,7 @@ pub async fn handle_rejection(err: Rejection) -> std::result::Result<impl Reply,
         message = "Invalid Body";
     } else if let Some(e) = err.find::<Error>() {
         match e {
-            Error::DBQueryError(_) => {
+            Error::DBQuery(_) => {
                 code = StatusCode::INTERNAL_SERVER_ERROR;
                 message = "Could not Execute request";
             }

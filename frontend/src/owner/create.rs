@@ -23,12 +23,12 @@ impl CreateForm {
             .callback(move |e: InputData| Msg::EditName(e.value));
 
         html! {
-            <div class=classes!("pet-form")>
+            <div class={ classes!("pet-form") }>
                 <div>
                     <input type="text" value={self.state_name.clone()} oninput={edit_name} />
                 </div>
                 <div>
-                    <button onclick=self.link.callback(move |_| Msg::MakeReq)>{"Submit"}</button>
+                    <button onclick={ self.link.callback(move |_| Msg::MakeReq) }>{"Submit"}</button>
                 </div>
             </div>
         }
@@ -81,11 +81,10 @@ impl Component for CreateForm {
 
                 let task = FetchService::fetch(req, cb).expect("can create task");
                 self.fetch_task = Some(task);
-                ()
             }
             Msg::Resp(resp) => {
                 ConsoleService::info(&format!("owner created: {:?}", resp));
-                if let Ok(_) = resp {
+                if resp.is_ok() {
                     RouteAgent::dispatcher().send(RouteRequest::ChangeRoute(Route {
                         route: "/".to_string(),
                         state: (),

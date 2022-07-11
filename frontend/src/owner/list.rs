@@ -14,21 +14,21 @@ impl List {
     fn render_list(&self) -> Html {
         if let Some(t) = &self.owners {
             html! {
-                <div class=classes!("list")>
+                <div class={ classes!("list") }>
                     { t.iter().map(|name| self.view_owner(name)).collect::<Html>() }
                 </div>
             }
         } else {
             html! {
-                <div class=classes!("loading")>{"loading..."}</div>
+                <div class={ classes!("loading") }>{"loading..."}</div>
             }
         }
     }
 
     fn view_owner(&self, owner: &OwnerResponse) -> Html {
         html! {
-            <div class=classes!("list-item")>
-                <Anchor route=AppRoute::Detail(owner.id as i32)>
+            <div class={ classes!("list-item") }>
+                <Anchor route={ AppRoute::Detail(owner.id as i32) }>
                     { &owner.name }
                 </Anchor>
             </div>
@@ -79,7 +79,6 @@ impl Component for List {
 
                 let task = FetchService::fetch(req, cb).expect("can create task");
                 self.fetch_task = Some(task);
-                ()
             }
             Msg::Resp(resp) => {
                 if let Ok(data) = resp {

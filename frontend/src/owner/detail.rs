@@ -28,14 +28,14 @@ impl Detail {
         match owner {
             Some(o) => {
                 html! {
-                    <div class=classes!("detail")>
-                        <h1>{&o.name}{" ("}<span class=classes!("id")>{o.id}</span>{")"}</h1>
+                    <div class={ classes!("detail") }>
+                        <h1>{&o.name}{" ("}<span class={ classes!("id") }>{o.id}</span>{")"}</h1>
                         {
                             self.view_pet_list(pets)
                         }
 
                     <br />
-                    <Anchor route=AppRoute::CreatePet(o.id as i32)>
+                    <Anchor route={ AppRoute::CreatePet(o.id as i32) }>
                         { "Create New Pet" }
                     </Anchor>
                     </div>
@@ -43,7 +43,7 @@ impl Detail {
             }
             None => {
                 html! {
-                    <div class=classes!("loading")>{"loading..."}</div>
+                    <div class={ classes!("loading") }>{"loading..."}</div>
                 }
             }
         }
@@ -58,7 +58,7 @@ impl Detail {
             }
             None => {
                 html! {
-                    <div class=classes!("loading")>{"loading..."}</div>
+                    <div class={ classes!("loading") }>{"loading..."}</div>
                 }
             }
         }
@@ -68,8 +68,8 @@ impl Detail {
         let id = pet.id;
         let owner_id = self.props.owner_id;
         html! {
-            <div class=classes!("list-item", "pet")>
-                <div><b>{ &pet.name }</b> { " (" } <button onclick=self.link.callback(move |_| Msg::MakeDeletePetReq(owner_id, id))>{"Delete"}</button> {")"}</div>
+            <div class={ classes!("list-item", "pet") }>
+                <div><b>{ &pet.name }</b> { " (" } <button onclick={ self.link.callback(move |_| Msg::MakeDeletePetReq(owner_id, id))} >{"Delete"}</button> {")"}</div>
                 <div>{ &pet.animal_type }</div>
                 <div>{ &pet.color.as_ref().unwrap_or(&String::new()) }</div>
             </div>
@@ -128,7 +128,6 @@ impl Component for Detail {
 
                 let task = FetchService::fetch(req, cb).expect("can create task");
                 self.fetch_pets_task = Some(task);
-                ()
             }
             Msg::MakeOwnerReq(id) => {
                 let req = Request::get(&format!("http://localhost:8000/owner/{}", id))
@@ -144,7 +143,6 @@ impl Component for Detail {
 
                 let task = FetchService::fetch(req, cb).expect("can create task");
                 self.fetch_owner_task = Some(task);
-                ()
             }
             Msg::MakeDeletePetReq(owner_id, pet_id) => {
                 let req = Request::delete(&format!(
@@ -162,7 +160,6 @@ impl Component for Detail {
 
                 let task = FetchService::fetch(req, cb).expect("can create task");
                 self.delete_pet_task = Some(task);
-                ()
             }
             Msg::RespPets(resp) => {
                 if let Ok(data) = resp {
@@ -179,7 +176,7 @@ impl Component for Detail {
                     self.pets = self
                         .pets
                         .as_ref()
-                        .map(|pets| pets.into_iter().filter(|p| p.id != id).cloned().collect());
+                        .map(|pets| pets.iter().filter(|p| p.id != id).cloned().collect());
                 }
             }
         }
