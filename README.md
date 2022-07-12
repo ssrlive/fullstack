@@ -33,7 +33,7 @@ sudo -u postgres psql
 ```
 - 步骤二： 修改登录 PostgreSQL 密码
 ```
-ALTER USER postgres WITH PASSWORD ‘postgres’;
+ALTER USER postgres WITH PASSWORD 'postgres';
 ```
 > 注： 密码 postgres 要用引号引起来, 命令最后有分号.
 

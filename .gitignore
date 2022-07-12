@@ -1,5 +1,6 @@
 Cargo.lock
 www
+frontend/dist/
 backend/target
 frontend/target
 common/target
